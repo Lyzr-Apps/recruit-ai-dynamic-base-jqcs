@@ -3,10 +3,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { FiBriefcase, FiUsers, FiCalendar, FiDollarSign, FiFileText, FiBarChart2 } from 'react-icons/fi'
+import { FiBriefcase, FiUsers, FiBarChart2 } from 'react-icons/fi'
 
 import DashboardSection from './sections/DashboardSection'
 import RequisitionDetailSection from './sections/RequisitionDetailSection'
@@ -39,11 +37,11 @@ class ErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-white text-[hsl(222,47%,11%)]">
+        <div className="min-h-screen flex items-center justify-center bg-[hsl(210,40%,97%)] text-[hsl(222,47%,11%)]">
           <div className="text-center p-8 max-w-md">
             <h2 className="text-xl font-semibold mb-2">Something went wrong</h2>
             <p className="text-[hsl(215,16%,47%)] mb-4 text-sm">{this.state.error}</p>
-            <button onClick={() => this.setState({ hasError: false, error: '' })} className="px-4 py-2 bg-[hsl(222,47%,11%)] text-[hsl(210,40%,98%)] rounded-[0.875rem] text-sm">
+            <button onClick={() => this.setState({ hasError: false, error: '' })} className="px-5 py-2.5 bg-[hsl(222,47%,11%)] text-white rounded-lg text-sm font-medium shadow-sm hover:bg-[hsl(222,47%,16%)] transition-colors">
               Try again
             </button>
           </div>
@@ -90,7 +88,6 @@ export default function Page() {
   const [selectedCandidateId, setSelectedCandidateId] = useState<string | null>(null)
   const [activeAgentId, setActiveAgentId] = useState<string | null>(null)
   const [useSample, setUseSample] = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   useEffect(() => {
     if (useSample && requisitions.length === 0) {
@@ -157,32 +154,32 @@ export default function Page() {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen flex bg-gradient-to-br from-[hsl(210,20%,97%)] via-[hsl(220,25%,95%)] to-[hsl(230,15%,97%)]">
+      <div className="min-h-screen flex bg-[hsl(210,40%,97%)]">
         {/* Sidebar */}
-        <aside className={`${sidebarCollapsed ? 'w-16' : 'w-64'} flex-shrink-0 bg-[hsl(210,40%,97%)] border-r border-[hsl(214,32%,91%)] flex flex-col transition-all duration-200`}>
-          <div className="p-4 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-[0.625rem] bg-[hsl(222,47%,11%)] flex items-center justify-center flex-shrink-0">
+        <aside className="w-64 flex-shrink-0 bg-white border-r border-[hsl(214,32%,91%)] flex flex-col">
+          <div className="p-5 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-[hsl(222,47%,11%)] flex items-center justify-center flex-shrink-0 shadow-sm">
               <FiBriefcase className="w-4 h-4 text-white" />
             </div>
-            {!sidebarCollapsed && <span className="font-bold text-[hsl(222,47%,11%)] text-lg">Recruitment AI</span>}
+            <span className="font-bold text-[hsl(222,47%,11%)] text-lg tracking-tight">Recruitment AI</span>
           </div>
-          <Separator className="bg-[hsl(214,32%,91%)]" />
+          <div className="h-px bg-[hsl(214,32%,91%)]" />
 
           <nav className="flex-1 p-3 space-y-1">
-            <button onClick={goToDashboard} className={`w-full flex items-center gap-3 px-3 py-2 rounded-[0.625rem] text-sm transition-colors ${currentView === 'dashboard' ? 'bg-[hsl(222,47%,11%)] text-white' : 'text-[hsl(215,16%,47%)] hover:bg-[hsl(210,40%,94%)]'}`}>
+            <button onClick={goToDashboard} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${currentView === 'dashboard' ? 'bg-[hsl(222,47%,11%)] text-white shadow-sm' : 'text-[hsl(215,16%,47%)] hover:bg-[hsl(210,40%,96%)]'}`}>
               <FiBarChart2 className="w-4 h-4 flex-shrink-0" />
-              {!sidebarCollapsed && <span>Dashboard</span>}
+              <span>Dashboard</span>
             </button>
 
-            {!sidebarCollapsed && requisitions.length > 0 && (
+            {requisitions.length > 0 && (
               <>
-                <div className="pt-3 pb-1 px-3">
-                  <span className="text-[10px] font-medium text-[hsl(215,16%,47%)] uppercase tracking-wider">Open Roles</span>
+                <div className="pt-4 pb-1 px-3">
+                  <span className="text-[10px] font-semibold text-[hsl(215,16%,47%)] uppercase tracking-widest">Open Roles</span>
                 </div>
                 <ScrollArea className="max-h-[240px]">
                   {requisitions.filter(r => r.status === 'open').map(req => (
-                    <button key={req.id} onClick={() => handleSelectRequisition(req)} className={`w-full flex items-center gap-2 px-3 py-2 rounded-[0.625rem] text-sm transition-colors text-left ${selectedReqId === req.id ? 'bg-[hsl(222,47%,11%)] text-white' : 'text-[hsl(215,16%,47%)] hover:bg-[hsl(210,40%,94%)]'}`}>
-                      <FiUsers className="w-3 h-3 flex-shrink-0" />
+                    <button key={req.id} onClick={() => handleSelectRequisition(req)} className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors text-left mb-0.5 ${selectedReqId === req.id ? 'bg-[hsl(222,47%,11%)] text-white shadow-sm' : 'text-[hsl(215,16%,47%)] hover:bg-[hsl(210,40%,96%)]'}`}>
+                      <FiUsers className="w-3.5 h-3.5 flex-shrink-0" />
                       <span className="truncate">{req.title}</span>
                     </button>
                   ))}
@@ -191,41 +188,33 @@ export default function Page() {
             )}
           </nav>
 
-          <Separator className="bg-[hsl(214,32%,91%)]" />
+          <div className="h-px bg-[hsl(214,32%,91%)]" />
 
           {/* Agent Status */}
-          {!sidebarCollapsed && (
-            <div className="p-3">
-              <span className="text-[10px] font-medium text-[hsl(215,16%,47%)] uppercase tracking-wider px-3">AI Agents</span>
-              <div className="mt-2 space-y-1">
-                {AGENTS.map(a => (
-                  <div key={a.id} className="flex items-center gap-2 px-3 py-1.5 text-xs">
-                    <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${activeAgentId === a.id ? 'bg-green-500 animate-pulse' : 'bg-[hsl(214,32%,91%)]'}`} />
-                    <span className={`truncate ${activeAgentId === a.id ? 'text-[hsl(222,47%,11%)] font-medium' : 'text-[hsl(215,16%,47%)]'}`}>{a.name}</span>
-                  </div>
-                ))}
-              </div>
+          <div className="p-3">
+            <span className="text-[10px] font-semibold text-[hsl(215,16%,47%)] uppercase tracking-widest px-3">AI Agents</span>
+            <div className="mt-2 space-y-0.5">
+              {AGENTS.map(a => (
+                <div key={a.id} className="flex items-center gap-2 px-3 py-1.5 text-xs rounded-md">
+                  <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${activeAgentId === a.id ? 'bg-emerald-500 animate-pulse' : 'bg-[hsl(214,32%,91%)]'}`} />
+                  <span className={`truncate ${activeAgentId === a.id ? 'text-[hsl(222,47%,11%)] font-medium' : 'text-[hsl(215,16%,47%)]'}`}>{a.name}</span>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
 
           {/* Sample Toggle */}
-          <div className="p-3 border-t border-[hsl(214,32%,91%)]">
-            {!sidebarCollapsed ? (
-              <div className="flex items-center justify-between px-3">
-                <Label className="text-xs text-[hsl(215,16%,47%)]">Sample Data</Label>
-                <Switch checked={useSample} onCheckedChange={setUseSample} />
-              </div>
-            ) : (
-              <div className="flex justify-center">
-                <Switch checked={useSample} onCheckedChange={setUseSample} />
-              </div>
-            )}
+          <div className="p-4 border-t border-[hsl(214,32%,91%)]">
+            <div className="flex items-center justify-between px-1">
+              <Label className="text-xs text-[hsl(215,16%,47%)] font-medium">Sample Data</Label>
+              <Switch checked={useSample} onCheckedChange={setUseSample} />
+            </div>
           </div>
         </aside>
 
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-6xl mx-auto p-6">
+          <div className="max-w-6xl mx-auto p-8">
             {currentView === 'dashboard' && (
               <DashboardSection
                 requisitions={requisitions}
@@ -287,9 +276,11 @@ export default function Page() {
 
             {currentView !== 'dashboard' && !selectedReq && (
               <div className="text-center py-20">
-                <FiBriefcase className="w-10 h-10 mx-auto text-[hsl(215,16%,47%)] mb-3" />
-                <p className="text-[hsl(215,16%,47%)]">No requisition selected</p>
-                <button onClick={goToDashboard} className="mt-2 text-sm text-[hsl(222,47%,11%)] underline">Go to Dashboard</button>
+                <div className="w-16 h-16 bg-[hsl(210,40%,94%)] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FiBriefcase className="w-7 h-7 text-[hsl(215,16%,47%)]" />
+                </div>
+                <p className="text-[hsl(222,47%,11%)] font-medium mb-1">No requisition selected</p>
+                <button onClick={goToDashboard} className="mt-2 text-sm text-[hsl(222,47%,11%)] underline hover:no-underline">Go to Dashboard</button>
               </div>
             )}
           </div>

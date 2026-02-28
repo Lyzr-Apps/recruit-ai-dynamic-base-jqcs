@@ -2,14 +2,12 @@
 
 import React, { useState } from 'react'
 import { callAIAgent, AIAgentResponse } from '@/lib/aiAgent'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { FiArrowLeft, FiDollarSign, FiSend, FiCheck, FiAlertTriangle, FiClock, FiMail, FiFileText, FiTrendingUp } from 'react-icons/fi'
+import { FiArrowLeft, FiDollarSign, FiSend, FiCheck, FiAlertTriangle, FiClock, FiMail, FiFileText, FiTrendingUp, FiX } from 'react-icons/fi'
 
 const NEGOTIATION_AGENT = '69a36b75ce2839b4041a40da'
 const OFFER_AGENT = '69a36b922d64d730c5089dca'
@@ -135,19 +133,21 @@ export default function OfferManagementSection({
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" onClick={onBack} className="rounded-[0.875rem]"><FiArrowLeft className="w-4 h-4" /></Button>
+        <button onClick={onBack} className="w-9 h-9 rounded-lg border border-[hsl(214,32%,91%)] bg-white flex items-center justify-center hover:bg-[hsl(210,40%,96%)] transition-colors">
+          <FiArrowLeft className="w-4 h-4 text-[hsl(222,47%,11%)]" />
+        </button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-[hsl(222,47%,11%)]">Offer Management</h1>
+          <h1 className="text-2xl font-semibold tracking-[-0.01em] text-[hsl(222,47%,11%)]">Offer Management</h1>
           <p className="text-sm text-[hsl(215,16%,47%)]">{candidate.name} &middot; {requisitionTitle}</p>
         </div>
-        <Badge className={offerStatus === 'sent' ? 'bg-blue-100 text-blue-700' : offerStatus === 'accepted' ? 'bg-green-100 text-green-700' : offerStatus === 'declined' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-600'}>
+        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${offerStatus === 'sent' ? 'bg-blue-50 text-blue-600 border border-blue-200' : offerStatus === 'accepted' ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' : offerStatus === 'declined' ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-slate-100 text-slate-600'}`}>
           {offerStatus.charAt(0).toUpperCase() + offerStatus.slice(1)}
-        </Badge>
+        </span>
       </div>
 
       {statusMessage && (
-        <div className={`flex items-center gap-2 p-3 rounded-[0.875rem] text-sm ${statusMessage.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : statusMessage.type === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
-          {statusMessage.type === 'success' ? <FiCheck /> : statusMessage.type === 'error' ? <FiAlertTriangle /> : <FiClock className="animate-spin" />}
+        <div className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium ${statusMessage.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : statusMessage.type === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
+          {statusMessage.type === 'success' ? <FiCheck className="w-4 h-4 flex-shrink-0" /> : statusMessage.type === 'error' ? <FiAlertTriangle className="w-4 h-4 flex-shrink-0" /> : <FiClock className="animate-spin w-4 h-4 flex-shrink-0" />}
           {statusMessage.text}
         </div>
       )}
@@ -155,85 +155,85 @@ export default function OfferManagementSection({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left - Form */}
         <div className="space-y-4">
-          <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-6 space-y-4">
-            <h2 className="font-semibold text-[hsl(222,47%,11%)] flex items-center gap-2"><FiDollarSign /> Compensation Details</h2>
-            <div>
-              <Label className="text-[hsl(222,47%,11%)]">Candidate Expectations</Label>
-              <Input placeholder="e.g. $130,000 base + 15% bonus" value={compForm.candidateExpectation} onChange={e => setCompForm(prev => ({ ...prev, candidateExpectation: e.target.value }))} className="rounded-[0.875rem] border-[hsl(214,32%,91%)]" />
+          <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm p-6 space-y-5">
+            <h2 className="font-semibold text-[hsl(222,47%,11%)] flex items-center gap-2 text-base"><FiDollarSign className="w-5 h-5" /> Compensation Details</h2>
+            <div className="space-y-1.5">
+              <Label className="text-[hsl(222,47%,11%)] text-sm font-medium">Candidate Expectations</Label>
+              <Input placeholder="e.g. $130,000 base + 15% bonus" value={compForm.candidateExpectation} onChange={e => setCompForm(prev => ({ ...prev, candidateExpectation: e.target.value }))} className="rounded-lg border-[hsl(214,32%,91%)] bg-white focus:ring-2 focus:ring-[hsl(222,47%,11%)] focus:border-transparent" />
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label className="text-[hsl(222,47%,11%)]">Base Salary</Label>
-                <Input placeholder="$120,000" value={compForm.baseSalary} onChange={e => setCompForm(prev => ({ ...prev, baseSalary: e.target.value }))} className="rounded-[0.875rem] border-[hsl(214,32%,91%)]" />
+              <div className="space-y-1.5">
+                <Label className="text-[hsl(222,47%,11%)] text-sm font-medium">Base Salary</Label>
+                <Input placeholder="$120,000" value={compForm.baseSalary} onChange={e => setCompForm(prev => ({ ...prev, baseSalary: e.target.value }))} className="rounded-lg border-[hsl(214,32%,91%)] bg-white" />
               </div>
-              <div>
-                <Label className="text-[hsl(222,47%,11%)]">Bonus</Label>
-                <Input placeholder="$15,000" value={compForm.bonus} onChange={e => setCompForm(prev => ({ ...prev, bonus: e.target.value }))} className="rounded-[0.875rem] border-[hsl(214,32%,91%)]" />
+              <div className="space-y-1.5">
+                <Label className="text-[hsl(222,47%,11%)] text-sm font-medium">Bonus</Label>
+                <Input placeholder="$15,000" value={compForm.bonus} onChange={e => setCompForm(prev => ({ ...prev, bonus: e.target.value }))} className="rounded-lg border-[hsl(214,32%,91%)] bg-white" />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label className="text-[hsl(222,47%,11%)]">Equity</Label>
-                <Input placeholder="$30,000 RSUs" value={compForm.equity} onChange={e => setCompForm(prev => ({ ...prev, equity: e.target.value }))} className="rounded-[0.875rem] border-[hsl(214,32%,91%)]" />
+              <div className="space-y-1.5">
+                <Label className="text-[hsl(222,47%,11%)] text-sm font-medium">Equity</Label>
+                <Input placeholder="$30,000 RSUs" value={compForm.equity} onChange={e => setCompForm(prev => ({ ...prev, equity: e.target.value }))} className="rounded-lg border-[hsl(214,32%,91%)] bg-white" />
               </div>
-              <div>
-                <Label className="text-[hsl(222,47%,11%)]">Start Date</Label>
-                <Input type="date" value={compForm.startDate} onChange={e => setCompForm(prev => ({ ...prev, startDate: e.target.value }))} className="rounded-[0.875rem] border-[hsl(214,32%,91%)]" />
+              <div className="space-y-1.5">
+                <Label className="text-[hsl(222,47%,11%)] text-sm font-medium">Start Date</Label>
+                <Input type="date" value={compForm.startDate} onChange={e => setCompForm(prev => ({ ...prev, startDate: e.target.value }))} className="rounded-lg border-[hsl(214,32%,91%)] bg-white" />
               </div>
             </div>
-            <div>
-              <Label className="text-[hsl(222,47%,11%)]">Other Benefits</Label>
-              <Textarea placeholder="e.g. Remote work, 20 PTO days, health insurance..." value={compForm.otherBenefits} onChange={e => setCompForm(prev => ({ ...prev, otherBenefits: e.target.value }))} rows={2} className="rounded-[0.875rem] border-[hsl(214,32%,91%)]" />
+            <div className="space-y-1.5">
+              <Label className="text-[hsl(222,47%,11%)] text-sm font-medium">Other Benefits</Label>
+              <Textarea placeholder="e.g. Remote work, 20 PTO days, health insurance..." value={compForm.otherBenefits} onChange={e => setCompForm(prev => ({ ...prev, otherBenefits: e.target.value }))} rows={2} className="rounded-lg border-[hsl(214,32%,91%)] bg-white focus:ring-2 focus:ring-[hsl(222,47%,11%)] focus:border-transparent" />
             </div>
-            <div className="text-xs text-[hsl(215,16%,47%)]">Budget range: ${salaryMin?.toLocaleString()}-${salaryMax?.toLocaleString()}</div>
+            <div className="bg-[hsl(210,40%,98%)] rounded-lg px-3 py-2 text-xs text-[hsl(215,16%,47%)] border border-[hsl(214,32%,91%)]">Budget range: ${salaryMin?.toLocaleString()}-${salaryMax?.toLocaleString()}</div>
             <div className="flex gap-3">
-              <Button onClick={handleNegotiate} disabled={loading !== null} className="flex-1 bg-[hsl(222,47%,11%)] text-[hsl(210,40%,98%)] rounded-[0.875rem] gap-2">
-                {loading === 'negotiating' ? <><FiClock className="animate-spin" /> Analyzing...</> : <><FiTrendingUp /> Analyze Compensation</>}
-              </Button>
-              <Button onClick={handleGenerateOffer} disabled={loading !== null} variant="outline" className="flex-1 rounded-[0.875rem] gap-2 border-[hsl(214,32%,91%)]">
-                {loading === 'offer' ? <><FiClock className="animate-spin" /> Generating...</> : <><FiSend /> Generate &amp; Send Offer</>}
-              </Button>
+              <button onClick={handleNegotiate} disabled={loading !== null} className="flex-1 bg-[hsl(222,47%,11%)] hover:bg-[hsl(222,47%,16%)] disabled:opacity-50 text-white rounded-lg px-5 py-2.5 font-medium shadow-sm flex items-center justify-center gap-2 text-sm transition-colors">
+                {loading === 'negotiating' ? <><FiClock className="animate-spin w-4 h-4" /> Analyzing...</> : <><FiTrendingUp className="w-4 h-4" /> Analyze Compensation</>}
+              </button>
+              <button onClick={handleGenerateOffer} disabled={loading !== null} className="flex-1 border border-[hsl(214,32%,91%)] bg-white hover:bg-[hsl(210,40%,96%)] disabled:opacity-50 text-[hsl(222,47%,11%)] rounded-lg px-5 py-2.5 font-medium flex items-center justify-center gap-2 text-sm transition-colors">
+                {loading === 'offer' ? <><FiClock className="animate-spin w-4 h-4" /> Generating...</> : <><FiSend className="w-4 h-4" /> Generate & Send Offer</>}
+              </button>
             </div>
           </div>
 
           {negotiationResult && (
             <div className="space-y-4">
               {negotiationResult?.market_analysis && (
-                <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-4">
+                <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm p-5">
                   <h3 className="font-semibold text-[hsl(222,47%,11%)] mb-2">Market Analysis</h3>
                   <div className="text-sm text-[hsl(215,16%,47%)]">{renderMarkdown(negotiationResult.market_analysis)}</div>
                 </div>
               )}
-              <div className="bg-[hsl(222,47%,11%)] text-white rounded-[0.875rem] p-5">
-                <h3 className="font-semibold mb-3 flex items-center gap-2"><FiDollarSign /> Recommended Package</h3>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div><span className="text-white/60">Base</span><p className="font-bold">{negotiationResult?.recommended_package?.base_salary ?? 'N/A'}</p></div>
-                  <div><span className="text-white/60">Bonus</span><p className="font-bold">{negotiationResult?.recommended_package?.bonus ?? 'N/A'}</p></div>
-                  <div><span className="text-white/60">Equity</span><p className="font-bold">{negotiationResult?.recommended_package?.equity ?? 'N/A'}</p></div>
-                  <div><span className="text-white/60">Total</span><p className="font-bold">{negotiationResult?.recommended_package?.total_compensation ?? 'N/A'}</p></div>
+              <div className="bg-[hsl(222,47%,11%)] text-white rounded-[0.875rem] p-6 shadow-lg">
+                <h3 className="font-semibold mb-4 flex items-center gap-2"><FiDollarSign className="w-5 h-5" /> Recommended Package</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div><span className="text-white/60 text-xs">Base</span><p className="font-bold text-lg mt-0.5">{negotiationResult?.recommended_package?.base_salary ?? 'N/A'}</p></div>
+                  <div><span className="text-white/60 text-xs">Bonus</span><p className="font-bold text-lg mt-0.5">{negotiationResult?.recommended_package?.bonus ?? 'N/A'}</p></div>
+                  <div><span className="text-white/60 text-xs">Equity</span><p className="font-bold text-lg mt-0.5">{negotiationResult?.recommended_package?.equity ?? 'N/A'}</p></div>
+                  <div><span className="text-white/60 text-xs">Total</span><p className="font-bold text-lg mt-0.5">{negotiationResult?.recommended_package?.total_compensation ?? 'N/A'}</p></div>
                 </div>
-                {otherBenefits.length > 0 && <div className="flex flex-wrap gap-1 mt-3">{otherBenefits.map((b: string, i: number) => <Badge key={i} className="bg-white/20 text-white text-[10px]">{b}</Badge>)}</div>}
+                {otherBenefits.length > 0 && <div className="flex flex-wrap gap-1.5 mt-4">{otherBenefits.map((b: string, i: number) => <span key={i} className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-white/15 text-white">{b}</span>)}</div>}
               </div>
               {negotiationResult?.budget_comparison && (
-                <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-4 text-sm">
-                  <h4 className="font-semibold text-[hsl(222,47%,11%)] mb-2">Budget Comparison</h4>
-                  <div className="space-y-1">
-                    <div className="flex justify-between"><span className="text-[hsl(215,16%,47%)]">Range</span><span>{negotiationResult.budget_comparison?.budget_range ?? 'N/A'}</span></div>
-                    <div className="flex justify-between"><span className="text-[hsl(215,16%,47%)]">vs Budget</span><span>{negotiationResult.budget_comparison?.recommended_vs_budget ?? 'N/A'}</span></div>
-                    <div className="flex justify-between"><span className="text-[hsl(215,16%,47%)]">Within?</span><Badge className={negotiationResult.budget_comparison?.within_budget ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}>{negotiationResult.budget_comparison?.within_budget ? 'Yes' : 'No'}</Badge></div>
+                <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm p-5 text-sm">
+                  <h4 className="font-semibold text-[hsl(222,47%,11%)] mb-3">Budget Comparison</h4>
+                  <div className="space-y-2.5">
+                    <div className="flex justify-between"><span className="text-[hsl(215,16%,47%)]">Range</span><span className="font-medium">{negotiationResult.budget_comparison?.budget_range ?? 'N/A'}</span></div>
+                    <div className="flex justify-between"><span className="text-[hsl(215,16%,47%)]">vs Budget</span><span className="font-medium">{negotiationResult.budget_comparison?.recommended_vs_budget ?? 'N/A'}</span></div>
+                    <div className="flex justify-between items-center"><span className="text-[hsl(215,16%,47%)]">Within?</span><span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${negotiationResult.budget_comparison?.within_budget ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>{negotiationResult.budget_comparison?.within_budget ? 'Yes' : 'No'}</span></div>
                   </div>
                 </div>
               )}
               {negStrategy.length > 0 && (
-                <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-4">
-                  <h4 className="font-semibold text-[hsl(222,47%,11%)] mb-2">Strategy</h4>
-                  <ol className="space-y-1">{negStrategy.map((s: string, i: number) => <li key={i} className="text-sm text-[hsl(215,16%,47%)] flex gap-2"><span className="bg-[hsl(222,47%,11%)] text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] flex-shrink-0">{i+1}</span>{s}</li>)}</ol>
+                <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm p-5">
+                  <h4 className="font-semibold text-[hsl(222,47%,11%)] mb-3">Strategy</h4>
+                  <ol className="space-y-2">{negStrategy.map((s: string, i: number) => <li key={i} className="text-sm text-[hsl(215,16%,47%)] flex gap-2.5"><span className="bg-[hsl(222,47%,11%)] text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] flex-shrink-0">{i + 1}</span>{s}</li>)}</ol>
                 </div>
               )}
               {riskFactors.length > 0 && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-[0.875rem] p-4">
-                  <h4 className="font-semibold text-yellow-700 mb-2 flex items-center gap-1"><FiAlertTriangle /> Risk Factors</h4>
-                  <ul className="space-y-1">{riskFactors.map((r: string, i: number) => <li key={i} className="text-sm text-yellow-700">{r}</li>)}</ul>
+                <div className="bg-amber-50 border border-amber-200 rounded-[0.875rem] p-5">
+                  <h4 className="font-semibold text-amber-700 mb-2 flex items-center gap-1.5"><FiAlertTriangle className="w-4 h-4" /> Risk Factors</h4>
+                  <ul className="space-y-1.5">{riskFactors.map((r: string, i: number) => <li key={i} className="text-sm text-amber-700">{r}</li>)}</ul>
                 </div>
               )}
             </div>
@@ -243,59 +243,59 @@ export default function OfferManagementSection({
         {/* Right - Offer Preview */}
         <div className="space-y-4">
           {loading === 'negotiating' && !negotiationResult && (
-            <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-6">
+            <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm p-6">
               <div className="flex items-center gap-2 text-sm text-[hsl(215,16%,47%)] mb-4"><FiClock className="animate-spin" /> Analyzing market data and compensation...</div>
-              <div className="animate-pulse space-y-3">
-                <div className="h-4 bg-[hsl(210,40%,94%)] rounded w-3/4"></div>
-                <div className="h-4 bg-[hsl(210,40%,94%)] rounded w-1/2"></div>
+              <div className="animate-pulse space-y-4">
+                <div className="h-5 bg-[hsl(210,40%,92%)] rounded-lg w-3/4"></div>
+                <div className="h-5 bg-[hsl(210,40%,92%)] rounded-lg w-1/2"></div>
               </div>
             </div>
           )}
 
           {loading === 'offer' && (
-            <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-6">
+            <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm p-6">
               <div className="flex items-center gap-2 text-sm text-[hsl(215,16%,47%)] mb-4"><FiClock className="animate-spin" /> Drafting offer letter and preparing to send...</div>
-              <div className="animate-pulse space-y-3">
-                <div className="h-4 bg-[hsl(210,40%,94%)] rounded w-full"></div>
-                <div className="h-4 bg-[hsl(210,40%,94%)] rounded w-5/6"></div>
-                <div className="h-4 bg-[hsl(210,40%,94%)] rounded w-2/3"></div>
+              <div className="animate-pulse space-y-4">
+                <div className="h-5 bg-[hsl(210,40%,92%)] rounded-lg w-full"></div>
+                <div className="h-5 bg-[hsl(210,40%,92%)] rounded-lg w-5/6"></div>
+                <div className="h-5 bg-[hsl(210,40%,92%)] rounded-lg w-2/3"></div>
               </div>
             </div>
           )}
 
           {offerResult && (
-            <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-6 space-y-4">
+            <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm p-6 space-y-5">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-[hsl(222,47%,11%)] flex items-center gap-2"><FiFileText /> Offer Letter</h3>
-                <Badge className={offerResult?.email_sent ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>
+                <h3 className="font-semibold text-[hsl(222,47%,11%)] flex items-center gap-2"><FiFileText className="w-5 h-5" /> Offer Letter</h3>
+                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${offerResult?.email_sent ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' : 'bg-slate-100 text-slate-600'}`}>
                   {offerResult?.email_sent ? 'Email Sent' : 'Draft'}
-                </Badge>
+                </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 text-sm">
-                <div><span className="text-[hsl(215,16%,47%)]">Role</span><p className="font-medium text-[hsl(222,47%,11%)]">{offerResult?.role_title ?? requisitionTitle}</p></div>
-                <div><span className="text-[hsl(215,16%,47%)]">Recipient</span><p className="font-medium text-[hsl(222,47%,11%)]">{offerResult?.recipient_email ?? candidate.email}</p></div>
-                <div><span className="text-[hsl(215,16%,47%)]">Start Date</span><p className="font-medium text-[hsl(222,47%,11%)]">{offerResult?.start_date ?? 'TBD'}</p></div>
-                <div><span className="text-[hsl(215,16%,47%)]">Deadline</span><p className="font-medium text-[hsl(222,47%,11%)]">{offerResult?.acceptance_deadline ?? 'TBD'}</p></div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="space-y-0.5"><span className="text-[hsl(215,16%,47%)] text-xs">Role</span><p className="font-medium text-[hsl(222,47%,11%)]">{offerResult?.role_title ?? requisitionTitle}</p></div>
+                <div className="space-y-0.5"><span className="text-[hsl(215,16%,47%)] text-xs">Recipient</span><p className="font-medium text-[hsl(222,47%,11%)]">{offerResult?.recipient_email ?? candidate.email}</p></div>
+                <div className="space-y-0.5"><span className="text-[hsl(215,16%,47%)] text-xs">Start Date</span><p className="font-medium text-[hsl(222,47%,11%)]">{offerResult?.start_date ?? 'TBD'}</p></div>
+                <div className="space-y-0.5"><span className="text-[hsl(215,16%,47%)] text-xs">Deadline</span><p className="font-medium text-[hsl(222,47%,11%)]">{offerResult?.acceptance_deadline ?? 'TBD'}</p></div>
               </div>
 
               {offerResult?.compensation_summary && (
-                <div className="bg-[hsl(210,40%,96%)] rounded-[0.875rem] p-4">
-                  <h4 className="text-xs font-medium text-[hsl(222,47%,11%)] uppercase tracking-wider mb-2">Compensation Summary</h4>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div><span className="text-[hsl(215,16%,47%)]">Base</span><p className="font-semibold">{offerResult.compensation_summary?.base_salary ?? 'N/A'}</p></div>
-                    <div><span className="text-[hsl(215,16%,47%)]">Bonus</span><p className="font-semibold">{offerResult.compensation_summary?.bonus ?? 'N/A'}</p></div>
-                    <div><span className="text-[hsl(215,16%,47%)]">Equity</span><p className="font-semibold">{offerResult.compensation_summary?.equity ?? 'N/A'}</p></div>
-                    <div><span className="text-[hsl(215,16%,47%)]">Total</span><p className="font-semibold">{offerResult.compensation_summary?.total_package ?? 'N/A'}</p></div>
+                <div className="bg-[hsl(210,40%,98%)] rounded-xl p-4 border border-[hsl(214,32%,91%)]">
+                  <h4 className="text-xs font-semibold text-[hsl(222,47%,11%)] uppercase tracking-wider mb-3">Compensation Summary</h4>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div><span className="text-[hsl(215,16%,47%)] text-xs">Base</span><p className="font-semibold text-[hsl(222,47%,11%)]">{offerResult.compensation_summary?.base_salary ?? 'N/A'}</p></div>
+                    <div><span className="text-[hsl(215,16%,47%)] text-xs">Bonus</span><p className="font-semibold text-[hsl(222,47%,11%)]">{offerResult.compensation_summary?.bonus ?? 'N/A'}</p></div>
+                    <div><span className="text-[hsl(215,16%,47%)] text-xs">Equity</span><p className="font-semibold text-[hsl(222,47%,11%)]">{offerResult.compensation_summary?.equity ?? 'N/A'}</p></div>
+                    <div><span className="text-[hsl(215,16%,47%)] text-xs">Total</span><p className="font-semibold text-[hsl(222,47%,11%)]">{offerResult.compensation_summary?.total_package ?? 'N/A'}</p></div>
                   </div>
                 </div>
               )}
 
               {offerResult?.offer_letter_content && (
                 <div>
-                  <h4 className="text-xs font-medium text-[hsl(222,47%,11%)] uppercase tracking-wider mb-2">Letter Content</h4>
+                  <h4 className="text-xs font-semibold text-[hsl(222,47%,11%)] uppercase tracking-wider mb-2">Letter Content</h4>
                   <ScrollArea className="max-h-[300px]">
-                    <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] p-4 text-sm text-[hsl(215,16%,47%)]">
+                    <div className="bg-white border border-[hsl(214,32%,91%)] rounded-xl p-5 text-sm text-[hsl(215,16%,47%)]">
                       {renderMarkdown(offerResult.offer_letter_content)}
                     </div>
                   </ScrollArea>
@@ -303,32 +303,34 @@ export default function OfferManagementSection({
               )}
 
               {offerResult?.email_sent && (
-                <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 p-3 rounded-[0.875rem]">
+                <div className="flex items-center gap-2 text-sm text-emerald-700 bg-emerald-50 p-3 rounded-lg border border-emerald-200">
                   <FiMail className="w-4 h-4" /> Email sent to {offerResult?.recipient_email ?? candidate.email}
                 </div>
               )}
 
               {nextSteps.length > 0 && (
                 <div>
-                  <h4 className="text-xs font-medium text-[hsl(222,47%,11%)] uppercase tracking-wider mb-2">Next Steps</h4>
-                  <ol className="space-y-1">{nextSteps.map((s: string, i: number) => <li key={i} className="text-sm text-[hsl(215,16%,47%)] flex gap-2"><span className="text-[hsl(222,47%,11%)] font-medium">{i+1}.</span>{s}</li>)}</ol>
+                  <h4 className="text-xs font-semibold text-[hsl(222,47%,11%)] uppercase tracking-wider mb-2">Next Steps</h4>
+                  <ol className="space-y-1.5">{nextSteps.map((s: string, i: number) => <li key={i} className="text-sm text-[hsl(215,16%,47%)] flex gap-2"><span className="text-[hsl(222,47%,11%)] font-semibold">{i + 1}.</span>{s}</li>)}</ol>
                 </div>
               )}
 
               {offerStatus === 'sent' && (
-                <div className="flex gap-2">
-                  <Button onClick={() => setOfferStatus('accepted')} className="flex-1 bg-green-600 text-white rounded-[0.875rem] gap-2"><FiCheck /> Mark Accepted</Button>
-                  <Button onClick={() => setOfferStatus('declined')} variant="outline" className="flex-1 rounded-[0.875rem] gap-2 border-red-300 text-red-600"><FiAlertTriangle /> Mark Declined</Button>
+                <div className="flex gap-3">
+                  <button onClick={() => setOfferStatus('accepted')} className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg px-5 py-2.5 font-medium shadow-sm flex items-center justify-center gap-2 text-sm transition-colors"><FiCheck className="w-4 h-4" /> Mark Accepted</button>
+                  <button onClick={() => setOfferStatus('declined')} className="flex-1 border border-red-300 bg-white hover:bg-red-50 text-red-600 rounded-lg px-5 py-2.5 font-medium flex items-center justify-center gap-2 text-sm transition-colors"><FiX className="w-4 h-4" /> Mark Declined</button>
                 </div>
               )}
             </div>
           )}
 
           {!offerResult && !loading && (
-            <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-10 text-center">
-              <FiFileText className="w-10 h-10 mx-auto text-[hsl(215,16%,47%)] mb-3" />
-              <p className="text-[hsl(215,16%,47%)]">Offer letter preview will appear here</p>
-              <p className="text-xs text-[hsl(215,16%,47%)] mt-1">Set compensation details and click Generate &amp; Send Offer</p>
+            <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm py-16 text-center">
+              <div className="w-16 h-16 bg-[hsl(210,40%,94%)] rounded-full flex items-center justify-center mx-auto mb-4">
+                <FiFileText className="w-7 h-7 text-[hsl(215,16%,47%)]" />
+              </div>
+              <p className="text-[hsl(222,47%,11%)] font-medium mb-1">Offer letter preview will appear here</p>
+              <p className="text-sm text-[hsl(215,16%,47%)] max-w-sm mx-auto">Set compensation details and click Generate & Send Offer</p>
             </div>
           )}
         </div>

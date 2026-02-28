@@ -4,10 +4,8 @@ import React, { useState } from 'react'
 import { callAIAgent, AIAgentResponse } from '@/lib/aiAgent'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Switch } from '@/components/ui/switch'
-import { FiArrowLeft, FiUsers, FiSearch, FiCheck, FiAlertTriangle, FiClock, FiChevronRight, FiStar, FiFlag } from 'react-icons/fi'
+import { FiArrowLeft, FiUsers, FiSearch, FiCheck, FiAlertTriangle, FiClock, FiChevronRight, FiFlag, FiChevronDown } from 'react-icons/fi'
 
 interface Candidate {
   id: string; name: string; email: string; currentTitle: string; company: string
@@ -53,9 +51,21 @@ function parseAgentResponse(result: AIAgentResponse) {
 }
 
 function scoreColor(score: number): string {
-  if (score >= 80) return 'bg-green-100 text-green-700 border-green-200'
-  if (score >= 60) return 'bg-yellow-100 text-yellow-700 border-yellow-200'
-  return 'bg-red-100 text-red-700 border-red-200'
+  if (score >= 80) return 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+  if (score >= 60) return 'bg-amber-50 text-amber-700 border border-amber-200'
+  return 'bg-red-50 text-red-700 border border-red-200'
+}
+
+function statusPill(status: string): string {
+  switch (status) {
+    case 'sourced': return 'bg-slate-100 text-slate-600'
+    case 'screened': return 'bg-blue-50 text-blue-600 border border-blue-200'
+    case 'interviewing': return 'bg-purple-50 text-purple-600 border border-purple-200'
+    case 'analyzed': return 'bg-indigo-50 text-indigo-600 border border-indigo-200'
+    case 'negotiating': return 'bg-amber-50 text-amber-600 border border-amber-200'
+    case 'offered': return 'bg-emerald-50 text-emerald-600 border border-emerald-200'
+    default: return 'bg-slate-100 text-slate-600'
+  }
 }
 
 export default function RequisitionDetailSection({
@@ -167,52 +177,53 @@ export default function RequisitionDetailSection({
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" onClick={onBack} className="rounded-[0.875rem]"><FiArrowLeft className="w-4 h-4" /></Button>
+        <button onClick={onBack} className="w-9 h-9 rounded-lg border border-[hsl(214,32%,91%)] bg-white flex items-center justify-center hover:bg-[hsl(210,40%,96%)] transition-colors">
+          <FiArrowLeft className="w-4 h-4 text-[hsl(222,47%,11%)]" />
+        </button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-[hsl(222,47%,11%)]">{requisition.title}</h1>
+          <h1 className="text-2xl font-semibold tracking-[-0.01em] text-[hsl(222,47%,11%)]">{requisition.title}</h1>
           <p className="text-sm text-[hsl(215,16%,47%)]">{requisition.department} {requisition.team ? `/ ${requisition.team}` : ''} &middot; {requisition.location} &middot; {requisition.type}</p>
         </div>
-        <Badge className={requisition.status === 'open' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}>{requisition.status}</Badge>
+        <Badge className={requisition.status === 'open' ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' : 'bg-slate-100 text-slate-600'}>{requisition.status}</Badge>
       </div>
 
       {/* Pipeline Stepper */}
-      <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-4">
+      <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm p-5">
         <div className="flex items-center gap-2">
           {STAGES.map((s, i) => (
             <React.Fragment key={s}>
-              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${i < currentStageIdx ? 'bg-[hsl(222,47%,11%)] text-white' : i === currentStageIdx ? 'bg-[#E8795A] text-white' : 'bg-[hsl(210,40%,96%)] text-[hsl(215,16%,47%)]'}`}>
+              <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-colors ${i < currentStageIdx ? 'bg-[hsl(222,47%,11%)] text-white' : i === currentStageIdx ? 'bg-[hsl(12,76%,61%)] text-white shadow-md' : 'bg-[hsl(210,40%,94%)] text-[hsl(215,16%,47%)]'}`}>
                 {i < currentStageIdx ? <FiCheck className="w-3 h-3" /> : <span className="w-3 text-center">{i + 1}</span>}
                 {STAGE_LABELS[s]}
               </div>
-              {i < STAGES.length - 1 && <div className={`flex-1 h-0.5 ${i < currentStageIdx ? 'bg-[hsl(222,47%,11%)]' : 'bg-[hsl(214,32%,91%)]'}`} />}
+              {i < STAGES.length - 1 && <div className={`flex-1 h-0.5 rounded-full ${i < currentStageIdx ? 'bg-[hsl(222,47%,11%)]' : 'bg-[hsl(214,32%,91%)]'}`} />}
             </React.Fragment>
           ))}
         </div>
       </div>
 
       {statusMessage && (
-        <div className={`flex items-center gap-2 p-3 rounded-[0.875rem] text-sm ${statusMessage.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : statusMessage.type === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
-          {statusMessage.type === 'success' ? <FiCheck /> : statusMessage.type === 'error' ? <FiAlertTriangle /> : <FiClock className="animate-spin" />}
+        <div className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium ${statusMessage.type === 'success' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : statusMessage.type === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-blue-50 text-blue-700 border border-blue-200'}`}>
+          {statusMessage.type === 'success' ? <FiCheck className="w-4 h-4 flex-shrink-0" /> : statusMessage.type === 'error' ? <FiAlertTriangle className="w-4 h-4 flex-shrink-0" /> : <FiClock className="animate-spin w-4 h-4 flex-shrink-0" />}
           {statusMessage.text}
         </div>
       )}
 
       {/* Job Details Collapsible */}
-      <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md">
-        <button onClick={() => setShowDetails(!showDetails)} className="w-full flex items-center justify-between p-4 text-left">
+      <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm overflow-hidden">
+        <button onClick={() => setShowDetails(!showDetails)} className="w-full flex items-center justify-between p-5 text-left hover:bg-[hsl(210,40%,98%)] transition-colors">
           <span className="font-semibold text-[hsl(222,47%,11%)]">Job Details</span>
-          <FiChevronRight className={`w-4 h-4 text-[hsl(215,16%,47%)] transition-transform ${showDetails ? 'rotate-90' : ''}`} />
+          <FiChevronDown className={`w-4 h-4 text-[hsl(215,16%,47%)] transition-transform duration-200 ${showDetails ? 'rotate-180' : ''}`} />
         </button>
         {showDetails && (
-          <div className="px-4 pb-4 space-y-3">
-            <Separator className="bg-[hsl(214,32%,91%)]" />
-            <p className="text-sm text-[hsl(215,16%,47%)]">{requisition.description}</p>
+          <div className="px-5 pb-5 space-y-3 border-t border-[hsl(214,32%,91%)]">
+            <p className="text-sm text-[hsl(215,16%,47%)] pt-4">{requisition.description}</p>
             {(Array.isArray(requisition.requirements) ? requisition.requirements : []).length > 0 && (
               <div>
-                <span className="text-xs font-medium text-[hsl(222,47%,11%)] uppercase tracking-wider">Requirements</span>
-                <ul className="mt-1 space-y-1">
+                <span className="text-xs font-semibold text-[hsl(222,47%,11%)] uppercase tracking-wider">Requirements</span>
+                <ul className="mt-2 space-y-1.5">
                   {(Array.isArray(requisition.requirements) ? requisition.requirements : []).map((r, i) => (
-                    <li key={i} className="text-sm text-[hsl(215,16%,47%)] flex items-start gap-2"><FiCheck className="w-3 h-3 mt-1 text-[#3BA395] flex-shrink-0" />{r}</li>
+                    <li key={i} className="text-sm text-[hsl(215,16%,47%)] flex items-start gap-2"><FiCheck className="w-3.5 h-3.5 mt-0.5 text-emerald-500 flex-shrink-0" />{r}</li>
                   ))}
                 </ul>
               </div>
@@ -226,31 +237,31 @@ export default function RequisitionDetailSection({
 
       {/* Action Buttons */}
       <div className="flex gap-3 flex-wrap">
-        <Button onClick={handleSource} disabled={loading !== null} className="bg-[hsl(222,47%,11%)] text-[hsl(210,40%,98%)] rounded-[0.875rem] gap-2">
-          {loading === 'sourcing' ? <><FiClock className="animate-spin" /> Sourcing...</> : <><FiSearch /> Source &amp; Match Candidates</>}
-        </Button>
+        <button onClick={handleSource} disabled={loading !== null} className="bg-[hsl(222,47%,11%)] hover:bg-[hsl(222,47%,16%)] disabled:opacity-50 text-white rounded-lg px-5 py-2.5 font-medium shadow-sm flex items-center gap-2 text-sm transition-colors">
+          {loading === 'sourcing' ? <><FiClock className="animate-spin w-4 h-4" /> Sourcing...</> : <><FiSearch className="w-4 h-4" /> Source & Match Candidates</>}
+        </button>
         {candidates.filter(c => c.status === 'sourced').length > 0 && (
-          <Button onClick={handleScreen} disabled={loading !== null || selected.size === 0} variant="outline" className="rounded-[0.875rem] gap-2 border-[hsl(214,32%,91%)]">
-            {loading === 'screening' ? <><FiClock className="animate-spin" /> Screening...</> : <><FiFlag /> Screen Selected ({selected.size})</>}
-          </Button>
+          <button onClick={handleScreen} disabled={loading !== null || selected.size === 0} className="border border-[hsl(214,32%,91%)] bg-white hover:bg-[hsl(210,40%,96%)] disabled:opacity-50 text-[hsl(222,47%,11%)] rounded-lg px-5 py-2.5 font-medium flex items-center gap-2 text-sm transition-colors">
+            {loading === 'screening' ? <><FiClock className="animate-spin w-4 h-4" /> Screening...</> : <><FiFlag className="w-4 h-4" /> Screen Selected ({selected.size})</>}
+          </button>
         )}
       </div>
 
       {/* Loading skeleton */}
       {loading === 'sourcing' && candidates.length === 0 && (
-        <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-6">
+        <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm p-6">
           <div className="flex items-center gap-2 text-sm text-[hsl(215,16%,47%)] mb-4">
             <FiClock className="animate-spin" /> Searching for candidates across platforms...
           </div>
-          <div className="animate-pulse space-y-3">
-            {[1,2,3].map(n => (
+          <div className="animate-pulse space-y-4">
+            {[1, 2, 3].map(n => (
               <div key={n} className="flex gap-4 items-center">
-                <div className="h-10 w-10 bg-[hsl(210,40%,94%)] rounded-full" />
+                <div className="h-10 w-10 bg-[hsl(210,40%,92%)] rounded-full" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-4 bg-[hsl(210,40%,94%)] rounded w-1/3" />
-                  <div className="h-3 bg-[hsl(210,40%,94%)] rounded w-1/2" />
+                  <div className="h-4 bg-[hsl(210,40%,92%)] rounded-lg w-1/3" />
+                  <div className="h-3 bg-[hsl(210,40%,92%)] rounded-lg w-1/2" />
                 </div>
-                <div className="h-6 w-12 bg-[hsl(210,40%,94%)] rounded" />
+                <div className="h-6 w-14 bg-[hsl(210,40%,92%)] rounded-lg" />
               </div>
             ))}
           </div>
@@ -259,43 +270,41 @@ export default function RequisitionDetailSection({
 
       {/* Candidates List */}
       {candidates.length > 0 && (
-        <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md">
-          <div className="p-4 flex items-center justify-between">
+        <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm overflow-hidden">
+          <div className="p-5 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <h3 className="font-semibold text-[hsl(222,47%,11%)]">Candidates ({candidates.length})</h3>
-              <div className="flex gap-1">
-                {(['score','experience','name'] as const).map(s => (
-                  <button key={s} onClick={() => setSortBy(s)} className={`px-2 py-0.5 rounded text-xs ${sortBy === s ? 'bg-[hsl(222,47%,11%)] text-white' : 'bg-[hsl(210,40%,96%)] text-[hsl(215,16%,47%)]'}`}>
+              <div className="flex gap-1 bg-[hsl(210,40%,96%)] p-0.5 rounded-lg">
+                {(['score', 'experience', 'name'] as const).map(s => (
+                  <button key={s} onClick={() => setSortBy(s)} className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${sortBy === s ? 'bg-[hsl(222,47%,11%)] text-white shadow-sm' : 'text-[hsl(215,16%,47%)] hover:text-[hsl(222,47%,11%)]'}`}>
                     {s === 'score' ? 'Score' : s === 'experience' ? 'Exp' : 'Name'}
                   </button>
                 ))}
               </div>
             </div>
-            <button onClick={toggleAll} className="text-xs text-[hsl(215,16%,47%)] underline">
+            <button onClick={toggleAll} className="text-xs font-medium text-[hsl(215,16%,47%)] hover:text-[hsl(222,47%,11%)] transition-colors">
               {selected.size === candidates.length ? 'Deselect All' : 'Select All'}
             </button>
           </div>
-          <Separator className="bg-[hsl(214,32%,91%)]" />
+          <div className="border-t border-[hsl(214,32%,91%)]" />
           <ScrollArea className="max-h-[400px]">
             <div className="divide-y divide-[hsl(214,32%,91%)]">
               {sortedCandidates.map(c => (
                 <div key={c.id} className="flex items-center gap-3 p-4 hover:bg-[hsl(210,40%,98%)] transition-colors">
-                  <input type="checkbox" checked={selected.has(c.id)} onChange={() => toggleSelect(c.id)} className="rounded border-[hsl(214,32%,91%)]" />
+                  <input type="checkbox" checked={selected.has(c.id)} onChange={() => toggleSelect(c.id)} className="rounded border-[hsl(214,32%,91%)] w-4 h-4 accent-[hsl(222,47%,11%)]" />
                   <button onClick={() => onSelectCandidate(c)} className="flex-1 text-left flex items-center gap-3 group">
-                    <div className="w-9 h-9 rounded-full bg-[hsl(210,40%,96%)] flex items-center justify-center text-sm font-medium text-[hsl(222,47%,11%)]">
+                    <div className="w-10 h-10 rounded-full bg-[hsl(210,40%,94%)] border border-[hsl(214,32%,91%)] flex items-center justify-center text-sm font-semibold text-[hsl(222,47%,11%)]">
                       {(c.name ?? '?')[0]}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-[hsl(222,47%,11%)] truncate">{c.name}</span>
-                        <Badge variant="outline" className={`text-[10px] ${c.status === 'screened' ? 'border-blue-300 text-blue-600' : c.status === 'sourced' ? 'border-gray-300 text-gray-600' : c.status === 'interviewing' ? 'border-purple-300 text-purple-600' : 'border-green-300 text-green-600'}`}>{c.status}</Badge>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${statusPill(c.status)}`}>{c.status}</span>
                       </div>
                       <p className="text-xs text-[hsl(215,16%,47%)] truncate">{c.currentTitle}{c.company ? ` at ${c.company}` : ''} &middot; {c.yearsExperience}y exp</p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="text-right">
-                        <Badge className={`text-xs ${scoreColor(c.overallScore ?? 0)}`}>{c.overallScore ?? 0}</Badge>
-                      </div>
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold ${scoreColor(c.overallScore ?? 0)}`}>{c.overallScore ?? 0}</span>
                       <FiChevronRight className="w-4 h-4 text-[hsl(215,16%,47%)] group-hover:translate-x-1 transition-transform" />
                     </div>
                   </button>
@@ -307,10 +316,12 @@ export default function RequisitionDetailSection({
       )}
 
       {candidates.length === 0 && !loading && (
-        <div className="bg-white/75 backdrop-blur-[16px] border border-white/[0.18] rounded-[0.875rem] shadow-md p-10 text-center">
-          <FiUsers className="w-10 h-10 mx-auto text-[hsl(215,16%,47%)] mb-3" />
-          <p className="text-[hsl(215,16%,47%)]">No candidates yet</p>
-          <p className="text-xs text-[hsl(215,16%,47%)] mt-1">Click &quot;Source &amp; Match Candidates&quot; to find potential hires</p>
+        <div className="bg-white border border-[hsl(214,32%,91%)] rounded-[0.875rem] shadow-sm py-16 text-center">
+          <div className="w-16 h-16 bg-[hsl(210,40%,94%)] rounded-full flex items-center justify-center mx-auto mb-4">
+            <FiUsers className="w-7 h-7 text-[hsl(215,16%,47%)]" />
+          </div>
+          <p className="text-[hsl(222,47%,11%)] font-medium mb-1">No candidates yet</p>
+          <p className="text-sm text-[hsl(215,16%,47%)] max-w-sm mx-auto">Click "Source & Match Candidates" to find potential hires</p>
         </div>
       )}
     </div>
