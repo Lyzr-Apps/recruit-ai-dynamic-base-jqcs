@@ -81,6 +81,27 @@
       "type": "Output",
       "label": "Pipeline Output",
       "nodeCategory": "end"
+    },
+    {
+      "id": "jd_generator",
+      "type": "Agent",
+      "label": "Job Description Generator",
+      "nodeCategory": "agent",
+      "agent_id": "69a3753fc46cc1fb2b570443"
+    },
+    {
+      "id": "reference_checker",
+      "type": "Agent",
+      "label": "Candidate Reference Checker",
+      "nodeCategory": "agent",
+      "agent_id": "69a3753f8811f110756792da"
+    },
+    {
+      "id": "hiring_analytics",
+      "type": "Agent",
+      "label": "Hiring Analytics Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69a3753f2d64d730c5089ddb"
     }
   ],
   "edges": [
@@ -94,6 +115,12 @@
     { "source": "interview_analysis_manager", "target": "report_generator" },
     { "source": "interview_analysis_manager", "target": "compensation_negotiation" },
     { "source": "compensation_negotiation", "target": "offer_letter" },
-    { "source": "offer_letter", "target": "output_node" }
+    { "source": "offer_letter", "target": "output_node" },
+    { "source": "input_node", "target": "jd_generator" },
+    { "source": "jd_generator", "target": "sourcing_manager" },
+    { "source": "interview_analysis_manager", "target": "reference_checker" },
+    { "source": "reference_checker", "target": "compensation_negotiation" },
+    { "source": "output_node", "target": "hiring_analytics" },
+    { "source": "input_node", "target": "hiring_analytics" }
   ]
 }

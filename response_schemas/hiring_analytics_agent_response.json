@@ -1,0 +1,100 @@
+{
+  "agent_name": "Hiring Analytics Agent",
+  "agent_id": "69a3753f2d64d730c5089ddb",
+  "description": "AI agent that analyzes recruitment pipeline data to provide insights on hiring efficiency, candidate quality trends, and process optimization recommendations",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "pipeline_health": {
+      "total_requisitions": "number",
+      "total_candidates": "number",
+      "avg_time_to_hire_days": "number",
+      "overall_conversion_rate": "string",
+      "stage_conversion_rates": [
+        {
+          "stage": "string",
+          "conversion_rate": "string",
+          "avg_days_in_stage": "number",
+          "candidates_count": "number"
+        }
+      ],
+      "bottlenecks": [
+        "string"
+      ]
+    },
+    "candidate_quality": {
+      "avg_score": "number",
+      "score_distribution": "string",
+      "top_performers_pct": "string",
+      "quality_trend": "string"
+    },
+    "source_effectiveness": [
+      {
+        "source": "string",
+        "candidates": "number",
+        "avg_score": "number",
+        "conversion_rate": "string",
+        "cost_effectiveness": "string"
+      }
+    ],
+    "recommendations": [
+      {
+        "priority": "string",
+        "area": "string",
+        "recommendation": "string",
+        "expected_impact": "string"
+      }
+    ],
+    "summary": "string",
+    "key_insights": [
+      "string"
+    ]
+  },
+  "example_response": {
+    "pipeline_health": {
+      "total_requisitions": 0,
+      "total_candidates": 0,
+      "avg_time_to_hire_days": 0,
+      "overall_conversion_rate": "sample string",
+      "stage_conversion_rates": [
+        {
+          "stage": "sample string",
+          "conversion_rate": "sample string",
+          "avg_days_in_stage": 0,
+          "candidates_count": 0
+        }
+      ],
+      "bottlenecks": [
+        "sample string"
+      ]
+    },
+    "candidate_quality": {
+      "avg_score": 0,
+      "score_distribution": "sample string",
+      "top_performers_pct": "sample string",
+      "quality_trend": "sample string"
+    },
+    "source_effectiveness": [
+      {
+        "source": "sample string",
+        "candidates": 0,
+        "avg_score": 0,
+        "conversion_rate": "sample string",
+        "cost_effectiveness": "sample string"
+      }
+    ],
+    "recommendations": [
+      {
+        "priority": "sample string",
+        "area": "sample string",
+        "recommendation": "sample string",
+        "expected_impact": "sample string"
+      }
+    ],
+    "summary": "sample string",
+    "key_insights": [
+      "sample string"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 {
   "project": "Recruitment Assistant AI",
-  "total_agents": 10,
+  "total_agents": 13,
   "agents": {
     "web_sourcing_agent": {
       "agent_id": "69a36b429b1b24d656571776",
@@ -97,6 +97,33 @@
       "model": "gpt-4.1",
       "tools": [],
       "response_schema": "response_schemas/interview_analysis_manager_response.json"
+    },
+    "job_description_generator": {
+      "agent_id": "69a3753fc46cc1fb2b570443",
+      "name": "Job Description Generator",
+      "type": "independent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": [],
+      "response_schema": "response_schemas/job_description_generator_response.json"
+    },
+    "candidate_reference_checker": {
+      "agent_id": "69a3753f8811f110756792da",
+      "name": "Candidate Reference Checker",
+      "type": "independent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": [],
+      "response_schema": "response_schemas/candidate_reference_checker_response.json"
+    },
+    "hiring_analytics_agent": {
+      "agent_id": "69a3753f2d64d730c5089ddb",
+      "name": "Hiring Analytics Agent",
+      "type": "independent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": [],
+      "response_schema": "response_schemas/hiring_analytics_agent_response.json"
     }
   }
 }

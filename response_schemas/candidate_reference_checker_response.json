@@ -1,0 +1,78 @@
+{
+  "agent_name": "Candidate Reference Checker",
+  "agent_id": "69a3753f8811f110756792da",
+  "description": "AI agent that generates structured reference check questionnaires and analyzes reference feedback for comprehensive candidate verification",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "mode": "string",
+    "candidate_name": "string",
+    "role_applied": "string",
+    "reference_questions": [
+      {
+        "category": "string",
+        "question": "string",
+        "purpose": "string"
+      }
+    ],
+    "reference_analysis": {
+      "overall_score": "number",
+      "recommendation": "string",
+      "consistency_rating": "string",
+      "enthusiasm_level": "string",
+      "key_strengths": [
+        "string"
+      ],
+      "concerns": [
+        "string"
+      ],
+      "red_flags": [
+        "string"
+      ],
+      "patterns_identified": [
+        "string"
+      ],
+      "summary": "string"
+    },
+    "verification_status": "string",
+    "next_steps": [
+      "string"
+    ]
+  },
+  "example_response": {
+    "mode": "sample string",
+    "candidate_name": "sample string",
+    "role_applied": "sample string",
+    "reference_questions": [
+      {
+        "category": "sample string",
+        "question": "sample string",
+        "purpose": "sample string"
+      }
+    ],
+    "reference_analysis": {
+      "overall_score": 0,
+      "recommendation": "sample string",
+      "consistency_rating": "sample string",
+      "enthusiasm_level": "sample string",
+      "key_strengths": [
+        "sample string"
+      ],
+      "concerns": [
+        "sample string"
+      ],
+      "red_flags": [
+        "sample string"
+      ],
+      "patterns_identified": [
+        "sample string"
+      ],
+      "summary": "sample string"
+    },
+    "verification_status": "sample string",
+    "next_steps": [
+      "sample string"
+    ]
+  }
+}

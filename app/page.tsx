@@ -4,13 +4,16 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { FiBriefcase, FiUsers, FiBarChart2 } from 'react-icons/fi'
+import { FiBriefcase, FiUsers, FiBarChart2, FiFileText, FiCheckCircle, FiTrendingUp } from 'react-icons/fi'
 
 import DashboardSection from './sections/DashboardSection'
 import RequisitionDetailSection from './sections/RequisitionDetailSection'
 import CandidateProfileSection from './sections/CandidateProfileSection'
 import InterviewSchedulingSection from './sections/InterviewSchedulingSection'
 import OfferManagementSection from './sections/OfferManagementSection'
+import JDGeneratorSection from './sections/JDGeneratorSection'
+import ReferenceCheckSection from './sections/ReferenceCheckSection'
+import HiringAnalyticsSection from './sections/HiringAnalyticsSection'
 
 import type { Requisition, Candidate } from './sections/DashboardSection'
 
@@ -21,6 +24,9 @@ const AGENTS = [
   { id: '69a36bb2baa6e1c48dc21fa0', name: 'Interview Analysis', purpose: 'Performance evaluation' },
   { id: '69a36b75ce2839b4041a40da', name: 'Compensation Negotiation', purpose: 'Salary analysis & strategy' },
   { id: '69a36b922d64d730c5089dca', name: 'Offer Letter', purpose: 'Drafts & sends offers' },
+  { id: '69a3753fc46cc1fb2b570443', name: 'JD Generator', purpose: 'Creates job descriptions' },
+  { id: '69a3753f8811f110756792da', name: 'Reference Check', purpose: 'Verifies candidates' },
+  { id: '69a3753f2d64d730c5089ddb', name: 'Hiring Analytics', purpose: 'Pipeline insights' },
 ]
 
 class ErrorBoundary extends React.Component<
@@ -79,7 +85,7 @@ function makeSampleRequisitions(): Requisition[] {
   ]
 }
 
-type ViewType = 'dashboard' | 'requisition' | 'candidate' | 'interview' | 'offer'
+type ViewType = 'dashboard' | 'requisition' | 'candidate' | 'interview' | 'offer' | 'jd-generator' | 'reference-check' | 'analytics'
 
 export default function Page() {
   const [requisitions, setRequisitions] = useState<Requisition[]>([])
@@ -141,6 +147,11 @@ export default function Page() {
     setCurrentView('offer')
   }, [])
 
+  const handleReferenceCheck = useCallback((candidate: Candidate) => {
+    setSelectedCandidateId(candidate.id)
+    setCurrentView('reference-check')
+  }, [])
+
   const goToDashboard = useCallback(() => {
     setCurrentView('dashboard')
     setSelectedReqId(null)
@@ -169,6 +180,22 @@ export default function Page() {
             <button onClick={goToDashboard} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${currentView === 'dashboard' ? 'bg-[hsl(222,47%,11%)] text-white shadow-sm' : 'text-[hsl(215,16%,47%)] hover:bg-[hsl(210,40%,96%)]'}`}>
               <FiBarChart2 className="w-4 h-4 flex-shrink-0" />
               <span>Dashboard</span>
+            </button>
+
+            <div className="pt-3 pb-1 px-3">
+              <span className="text-[10px] font-semibold text-[hsl(215,16%,47%)] uppercase tracking-widest">Tools</span>
+            </div>
+            <button onClick={() => { setCurrentView('jd-generator') }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${currentView === 'jd-generator' ? 'bg-[hsl(222,47%,11%)] text-white shadow-sm' : 'text-[hsl(215,16%,47%)] hover:bg-[hsl(210,40%,96%)]'}`}>
+              <FiFileText className="w-4 h-4 flex-shrink-0" />
+              <span>JD Generator</span>
+            </button>
+            <button onClick={() => { setCurrentView('reference-check'); setSelectedReqId(null); setSelectedCandidateId(null) }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${currentView === 'reference-check' ? 'bg-[hsl(222,47%,11%)] text-white shadow-sm' : 'text-[hsl(215,16%,47%)] hover:bg-[hsl(210,40%,96%)]'}`}>
+              <FiCheckCircle className="w-4 h-4 flex-shrink-0" />
+              <span>Reference Check</span>
+            </button>
+            <button onClick={() => { setCurrentView('analytics') }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${currentView === 'analytics' ? 'bg-[hsl(222,47%,11%)] text-white shadow-sm' : 'text-[hsl(215,16%,47%)] hover:bg-[hsl(210,40%,96%)]'}`}>
+              <FiTrendingUp className="w-4 h-4 flex-shrink-0" />
+              <span>Hiring Analytics</span>
             </button>
 
             {requisitions.length > 0 && (
@@ -242,6 +269,7 @@ export default function Page() {
                 onUpdateCandidate={handleUpdateCandidate}
                 onScheduleInterview={handleScheduleInterview}
                 onStartNegotiation={handleStartNegotiation}
+                onReferenceCheck={handleReferenceCheck}
                 setActiveAgentId={setActiveAgentId}
               />
             )}
@@ -274,7 +302,62 @@ export default function Page() {
               />
             )}
 
-            {currentView !== 'dashboard' && !selectedReq && (
+            {currentView === 'jd-generator' && (
+              <JDGeneratorSection
+                onBack={goToDashboard}
+                onCreateRequisition={(data) => {
+                  const newReq: Requisition = {
+                    id: crypto.randomUUID(),
+                    title: data.title,
+                    department: data.department,
+                    description: data.description,
+                    requirements: data.requirements,
+                    salaryMin: 0,
+                    salaryMax: 0,
+                    location: '',
+                    type: 'Full-time',
+                    team: '',
+                    createdAt: new Date().toISOString(),
+                    status: 'open',
+                    stage: 'source',
+                    candidates: [],
+                  }
+                  setRequisitions(prev => [...prev, newReq])
+                  setSelectedReqId(newReq.id)
+                  setCurrentView('requisition')
+                }}
+                setActiveAgentId={setActiveAgentId}
+              />
+            )}
+
+            {currentView === 'reference-check' && (
+              <ReferenceCheckSection
+                candidateName={selectedCandidate?.name}
+                candidateEmail={selectedCandidate?.email}
+                requisitionTitle={selectedReq?.title}
+                onBack={() => {
+                  if (selectedCandidate && selectedReq) {
+                    setCurrentView('candidate')
+                  } else {
+                    goToDashboard()
+                  }
+                }}
+                onUpdateCandidate={selectedCandidate ? (data: any) => {
+                  handleUpdateCandidate({ ...selectedCandidate, ...data })
+                } : undefined}
+                setActiveAgentId={setActiveAgentId}
+              />
+            )}
+
+            {currentView === 'analytics' && (
+              <HiringAnalyticsSection
+                requisitions={requisitions}
+                onBack={goToDashboard}
+                setActiveAgentId={setActiveAgentId}
+              />
+            )}
+
+            {currentView !== 'dashboard' && currentView !== 'jd-generator' && currentView !== 'reference-check' && currentView !== 'analytics' && !selectedReq && (
               <div className="text-center py-20">
                 <div className="w-16 h-16 bg-[hsl(210,40%,94%)] rounded-full flex items-center justify-center mx-auto mb-4">
                   <FiBriefcase className="w-7 h-7 text-[hsl(215,16%,47%)]" />

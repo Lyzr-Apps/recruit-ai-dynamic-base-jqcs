@@ -1,0 +1,60 @@
+{
+  "agent_name": "Job Description Generator",
+  "agent_id": "69a3753fc46cc1fb2b570443",
+  "description": "AI agent that generates comprehensive, inclusive job descriptions based on role requirements, company culture, and market standards",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "job_title": "string",
+    "department": "string",
+    "role_summary": "string",
+    "key_responsibilities": [
+      "string"
+    ],
+    "required_qualifications": [
+      "string"
+    ],
+    "preferred_qualifications": [
+      "string"
+    ],
+    "benefits_and_perks": [
+      "string"
+    ],
+    "salary_range_guidance": "string",
+    "work_arrangement": "string",
+    "equal_opportunity_statement": "string",
+    "seo_keywords": [
+      "string"
+    ],
+    "tone_analysis": "string",
+    "inclusivity_score": "number",
+    "full_description_text": "string"
+  },
+  "example_response": {
+    "job_title": "sample string",
+    "department": "sample string",
+    "role_summary": "sample string",
+    "key_responsibilities": [
+      "sample string"
+    ],
+    "required_qualifications": [
+      "sample string"
+    ],
+    "preferred_qualifications": [
+      "sample string"
+    ],
+    "benefits_and_perks": [
+      "sample string"
+    ],
+    "salary_range_guidance": "sample string",
+    "work_arrangement": "sample string",
+    "equal_opportunity_statement": "sample string",
+    "seo_keywords": [
+      "sample string"
+    ],
+    "tone_analysis": "sample string",
+    "inclusivity_score": 0,
+    "full_description_text": "sample string"
+  }
+}

@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { FiArrowLeft, FiStar, FiAlertTriangle, FiCheck, FiClock, FiCalendar, FiBarChart2, FiDollarSign, FiFlag, FiAward, FiTrendingUp } from 'react-icons/fi'
+import { FiArrowLeft, FiStar, FiAlertTriangle, FiCheck, FiClock, FiCalendar, FiBarChart2, FiDollarSign, FiFlag, FiAward, FiTrendingUp, FiCheckCircle } from 'react-icons/fi'
 
 interface Candidate {
   id: string; name: string; email: string; currentTitle: string; company: string
@@ -27,6 +27,7 @@ interface CandidateProfileSectionProps {
   onUpdateCandidate: (candidate: Candidate) => void
   onScheduleInterview: (candidate: Candidate) => void
   onStartNegotiation: (candidate: Candidate) => void
+  onReferenceCheck?: (candidate: Candidate) => void
   setActiveAgentId: (id: string | null) => void
 }
 
@@ -82,7 +83,7 @@ function renderMarkdown(text: string) {
 }
 
 export default function CandidateProfileSection({
-  candidate, requisitionTitle, onBack, onUpdateCandidate, onScheduleInterview, onStartNegotiation, setActiveAgentId
+  candidate, requisitionTitle, onBack, onUpdateCandidate, onScheduleInterview, onStartNegotiation, onReferenceCheck, setActiveAgentId
 }: CandidateProfileSectionProps) {
   const [loading, setLoading] = useState(false)
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null)
@@ -160,6 +161,11 @@ export default function CandidateProfileSection({
     if (s === 'analyzed' || s === 'screened') {
       btns.push(
         <button key="negotiate" onClick={() => onStartNegotiation(candidate)} className="border border-[hsl(214,32%,91%)] bg-white hover:bg-[hsl(210,40%,96%)] text-[hsl(222,47%,11%)] rounded-lg px-5 py-2.5 font-medium flex items-center gap-2 text-sm transition-colors"><FiDollarSign className="w-4 h-4" /> Start Negotiation</button>
+      )
+    }
+    if (onReferenceCheck && (s === 'screened' || s === 'interviewing' || s === 'analyzed')) {
+      btns.push(
+        <button key="reference" onClick={() => onReferenceCheck(candidate)} className="border border-[hsl(214,32%,91%)] bg-white hover:bg-[hsl(210,40%,96%)] text-[hsl(222,47%,11%)] rounded-lg px-5 py-2.5 font-medium flex items-center gap-2 text-sm transition-colors"><FiCheckCircle className="w-4 h-4" /> Reference Check</button>
       )
     }
     return btns
