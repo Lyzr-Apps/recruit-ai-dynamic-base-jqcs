@@ -1,0 +1,102 @@
+{
+  "project": "Recruitment Assistant AI",
+  "total_agents": 10,
+  "agents": {
+    "web_sourcing_agent": {
+      "agent_id": "69a36b429b1b24d656571776",
+      "name": "Web Sourcing Agent",
+      "type": "sub-agent",
+      "parent_manager": "sourcing_manager",
+      "provider": "perplexity",
+      "model": "sonar-pro",
+      "tools": [],
+      "response_schema": "response_schemas/web_sourcing_agent_response.json"
+    },
+    "candidate_matching_agent": {
+      "agent_id": "69a36b42ce2839b4041a40d8",
+      "name": "Candidate Matching Agent",
+      "type": "sub-agent",
+      "parent_manager": "sourcing_manager",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": [],
+      "response_schema": "response_schemas/candidate_matching_agent_response.json"
+    },
+    "transcript_processor_agent": {
+      "agent_id": "69a36b422d842ec0d6494e3b",
+      "name": "Transcript Processor Agent",
+      "type": "sub-agent",
+      "parent_manager": "interview_analysis_manager",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": [],
+      "response_schema": "response_schemas/transcript_processor_agent_response.json"
+    },
+    "report_generator_agent": {
+      "agent_id": "69a36b43c46cc1fb2b570432",
+      "name": "Report Generator Agent",
+      "type": "sub-agent",
+      "parent_manager": "interview_analysis_manager",
+      "provider": "google",
+      "model": "gemini-2.5-pro",
+      "tools": [],
+      "response_schema": "response_schemas/report_generator_agent_response.json"
+    },
+    "candidate_evaluation_agent": {
+      "agent_id": "69a36b742d64d730c5089dc8",
+      "name": "Candidate Evaluation Agent",
+      "type": "independent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": [],
+      "response_schema": "response_schemas/candidate_evaluation_agent_response.json"
+    },
+    "interview_scheduler_agent": {
+      "agent_id": "69a36b92baa6e1c48dc21f9e",
+      "name": "Interview Scheduler Agent",
+      "type": "independent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": ["GOOGLECALENDAR_FIND_FREE_SLOTS", "GOOGLECALENDAR_CREATE_EVENT", "GOOGLECALENDAR_LIST_CALENDARS", "GMAIL_SEND_EMAIL"],
+      "response_schema": "response_schemas/interview_scheduler_agent_response.json"
+    },
+    "compensation_negotiation_agent": {
+      "agent_id": "69a36b75ce2839b4041a40da",
+      "name": "Compensation Negotiation Agent",
+      "type": "independent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": [],
+      "response_schema": "response_schemas/compensation_negotiation_agent_response.json"
+    },
+    "offer_letter_agent": {
+      "agent_id": "69a36b922d64d730c5089dca",
+      "name": "Offer Letter Agent",
+      "type": "independent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": ["GMAIL_SEND_EMAIL"],
+      "response_schema": "response_schemas/offer_letter_agent_response.json"
+    },
+    "sourcing_matching_manager": {
+      "agent_id": "69a36bb2782856e667061c38",
+      "name": "Sourcing & Matching Manager",
+      "type": "manager",
+      "managed_agents": ["69a36b429b1b24d656571776", "69a36b42ce2839b4041a40d8"],
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": [],
+      "response_schema": "response_schemas/sourcing_matching_manager_response.json"
+    },
+    "interview_analysis_manager": {
+      "agent_id": "69a36bb2baa6e1c48dc21fa0",
+      "name": "Interview Analysis Manager",
+      "type": "manager",
+      "managed_agents": ["69a36b422d842ec0d6494e3b", "69a36b43c46cc1fb2b570432"],
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "tools": [],
+      "response_schema": "response_schemas/interview_analysis_manager_response.json"
+    }
+  }
+}

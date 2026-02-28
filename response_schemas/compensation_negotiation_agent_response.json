@@ -1,0 +1,48 @@
+{
+  "agent_name": "Compensation Negotiation Agent",
+  "agent_id": "69a36b75ce2839b4041a40da",
+  "description": "Manages salary discussions within budget constraints and recommends optimal offer parameters",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "candidate_name": "string",
+    "role": "string",
+    "market_analysis": "string",
+    "recommended_package": {
+      "base_salary": "string",
+      "bonus": "string",
+      "equity": "string",
+      "total_compensation": "string",
+      "other_benefits": ["string"]
+    },
+    "budget_comparison": {
+      "budget_range": "string",
+      "recommended_vs_budget": "string",
+      "within_budget": "boolean"
+    },
+    "negotiation_strategy": ["string"],
+    "risk_factors": ["string"],
+    "recommendation": "string"
+  },
+  "example_response": {
+    "candidate_name": "sample string",
+    "role": "sample string",
+    "market_analysis": "sample string",
+    "recommended_package": {
+      "base_salary": "sample string",
+      "bonus": "sample string",
+      "equity": "sample string",
+      "total_compensation": "sample string",
+      "other_benefits": ["sample string"]
+    },
+    "budget_comparison": {
+      "budget_range": "sample string",
+      "recommended_vs_budget": "sample string",
+      "within_budget": true
+    },
+    "negotiation_strategy": ["sample string"],
+    "risk_factors": ["sample string"],
+    "recommendation": "sample string"
+  }
+}

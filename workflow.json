@@ -1,0 +1,99 @@
+{
+  "nodes": [
+    {
+      "id": "input_node",
+      "type": "Input",
+      "label": "Job Requisition Input",
+      "nodeCategory": "input"
+    },
+    {
+      "id": "sourcing_manager",
+      "type": "Agent",
+      "label": "Sourcing & Matching Manager",
+      "nodeCategory": "agent",
+      "agent_id": "69a36bb2782856e667061c38"
+    },
+    {
+      "id": "web_sourcing",
+      "type": "Agent",
+      "label": "Web Sourcing Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69a36b429b1b24d656571776"
+    },
+    {
+      "id": "candidate_matching",
+      "type": "Agent",
+      "label": "Candidate Matching Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69a36b42ce2839b4041a40d8"
+    },
+    {
+      "id": "candidate_evaluation",
+      "type": "Agent",
+      "label": "Candidate Evaluation Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69a36b742d64d730c5089dc8"
+    },
+    {
+      "id": "interview_scheduler",
+      "type": "Agent",
+      "label": "Interview Scheduler Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69a36b92baa6e1c48dc21f9e"
+    },
+    {
+      "id": "interview_analysis_manager",
+      "type": "Agent",
+      "label": "Interview Analysis Manager",
+      "nodeCategory": "agent",
+      "agent_id": "69a36bb2baa6e1c48dc21fa0"
+    },
+    {
+      "id": "transcript_processor",
+      "type": "Agent",
+      "label": "Transcript Processor Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69a36b422d842ec0d6494e3b"
+    },
+    {
+      "id": "report_generator",
+      "type": "Agent",
+      "label": "Report Generator Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69a36b43c46cc1fb2b570432"
+    },
+    {
+      "id": "compensation_negotiation",
+      "type": "Agent",
+      "label": "Compensation Negotiation Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69a36b75ce2839b4041a40da"
+    },
+    {
+      "id": "offer_letter",
+      "type": "Agent",
+      "label": "Offer Letter Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69a36b922d64d730c5089dca"
+    },
+    {
+      "id": "output_node",
+      "type": "Output",
+      "label": "Pipeline Output",
+      "nodeCategory": "end"
+    }
+  ],
+  "edges": [
+    { "source": "input_node", "target": "sourcing_manager" },
+    { "source": "sourcing_manager", "target": "web_sourcing" },
+    { "source": "sourcing_manager", "target": "candidate_matching" },
+    { "source": "sourcing_manager", "target": "candidate_evaluation" },
+    { "source": "candidate_evaluation", "target": "interview_scheduler" },
+    { "source": "interview_scheduler", "target": "interview_analysis_manager" },
+    { "source": "interview_analysis_manager", "target": "transcript_processor" },
+    { "source": "interview_analysis_manager", "target": "report_generator" },
+    { "source": "interview_analysis_manager", "target": "compensation_negotiation" },
+    { "source": "compensation_negotiation", "target": "offer_letter" },
+    { "source": "offer_letter", "target": "output_node" }
+  ]
+}

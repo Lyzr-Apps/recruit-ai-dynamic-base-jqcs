@@ -1,0 +1,42 @@
+{
+  "agent_name": "Candidate Matching Agent",
+  "agent_id": "69a36b42ce2839b4041a40d8",
+  "description": "Performs semantic matching and AI-powered ranking of sourced candidates against the job description",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "ranked_candidates": [
+      {
+        "name": "string",
+        "overall_score": "number",
+        "skills_score": "number",
+        "experience_score": "number",
+        "education_score": "number",
+        "fit_analysis": "string",
+        "strengths": ["string"],
+        "gaps": ["string"],
+        "recommendation": "string"
+      }
+    ],
+    "matching_summary": "string",
+    "top_recommendation": "string"
+  },
+  "example_response": {
+    "ranked_candidates": [
+      {
+        "name": "sample string",
+        "overall_score": 0,
+        "skills_score": 0,
+        "experience_score": 0,
+        "education_score": 0,
+        "fit_analysis": "sample string",
+        "strengths": ["sample string"],
+        "gaps": ["sample string"],
+        "recommendation": "sample string"
+      }
+    ],
+    "matching_summary": "sample string",
+    "top_recommendation": "sample string"
+  }
+}

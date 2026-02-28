@@ -1,0 +1,48 @@
+{
+  "agent_name": "Transcript Processor Agent",
+  "agent_id": "69a36b422d842ec0d6494e3b",
+  "description": "Processes raw interview transcripts to extract key themes, candidate responses, competency signals, and red flags",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "themes": ["string"],
+    "competency_signals": [
+      {
+        "competency": "string",
+        "evidence": "string",
+        "rating": "string",
+        "quotes": ["string"]
+      }
+    ],
+    "behavioral_indicators": {
+      "positive": ["string"],
+      "negative": ["string"]
+    },
+    "communication_quality": "string",
+    "technical_depth": "string",
+    "cultural_fit": "string",
+    "red_flags": ["string"],
+    "notable_quotes": ["string"]
+  },
+  "example_response": {
+    "themes": ["sample string"],
+    "competency_signals": [
+      {
+        "competency": "sample string",
+        "evidence": "sample string",
+        "rating": "sample string",
+        "quotes": ["sample string"]
+      }
+    ],
+    "behavioral_indicators": {
+      "positive": ["sample string"],
+      "negative": ["sample string"]
+    },
+    "communication_quality": "sample string",
+    "technical_depth": "sample string",
+    "cultural_fit": "sample string",
+    "red_flags": ["sample string"],
+    "notable_quotes": ["sample string"]
+  }
+}

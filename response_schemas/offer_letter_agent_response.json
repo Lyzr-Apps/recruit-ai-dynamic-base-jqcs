@@ -1,0 +1,40 @@
+{
+  "agent_name": "Offer Letter Agent",
+  "agent_id": "69a36b922d64d730c5089dca",
+  "description": "Drafts personalized offer letters based on finalized compensation and sends them via email",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "offer_status": "string",
+    "offer_letter_content": "string",
+    "recipient_email": "string",
+    "role_title": "string",
+    "compensation_summary": {
+      "base_salary": "string",
+      "bonus": "string",
+      "equity": "string",
+      "total_package": "string"
+    },
+    "start_date": "string",
+    "acceptance_deadline": "string",
+    "email_sent": "boolean",
+    "next_steps": ["string"]
+  },
+  "example_response": {
+    "offer_status": "sample string",
+    "offer_letter_content": "sample string",
+    "recipient_email": "sample string",
+    "role_title": "sample string",
+    "compensation_summary": {
+      "base_salary": "sample string",
+      "bonus": "sample string",
+      "equity": "sample string",
+      "total_package": "sample string"
+    },
+    "start_date": "sample string",
+    "acceptance_deadline": "sample string",
+    "email_sent": true,
+    "next_steps": ["sample string"]
+  }
+}

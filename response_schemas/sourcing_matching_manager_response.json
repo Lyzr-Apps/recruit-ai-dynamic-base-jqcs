@@ -1,0 +1,54 @@
+{
+  "agent_name": "Sourcing & Matching Manager",
+  "agent_id": "69a36bb2782856e667061c38",
+  "description": "Coordinates candidate sourcing from the web and semantic matching against the job description, aggregates a ranked shortlist of candidates",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "ranked_candidates": [
+      {
+        "name": "string",
+        "current_title": "string",
+        "company": "string",
+        "years_experience": "number",
+        "key_skills": ["string"],
+        "location": "string",
+        "education": "string",
+        "overall_score": "number",
+        "skills_score": "number",
+        "experience_score": "number",
+        "recommendation": "string",
+        "fit_analysis": "string",
+        "source_platform": "string"
+      }
+    ],
+    "sourcing_summary": "string",
+    "total_sourced": "number",
+    "total_matched": "number",
+    "top_recommendations": "string"
+  },
+  "example_response": {
+    "ranked_candidates": [
+      {
+        "name": "sample string",
+        "current_title": "sample string",
+        "company": "sample string",
+        "years_experience": 0,
+        "key_skills": ["sample string"],
+        "location": "sample string",
+        "education": "sample string",
+        "overall_score": 0,
+        "skills_score": 0,
+        "experience_score": 0,
+        "recommendation": "sample string",
+        "fit_analysis": "sample string",
+        "source_platform": "sample string"
+      }
+    ],
+    "sourcing_summary": "sample string",
+    "total_sourced": 0,
+    "total_matched": 0,
+    "top_recommendations": "sample string"
+  }
+}

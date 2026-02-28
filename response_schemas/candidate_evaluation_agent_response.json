@@ -1,0 +1,42 @@
+{
+  "agent_name": "Candidate Evaluation Agent",
+  "agent_id": "69a36b742d64d730c5089dc8",
+  "description": "Conducts agentic screening assessments with shortlisted candidates via structured conversational evaluation",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "candidate_name": "string",
+    "role_applied": "string",
+    "screening_questions": [
+      {
+        "question": "string",
+        "category": "string",
+        "answer_evaluation": "string",
+        "score": "number"
+      }
+    ],
+    "overall_score": "number",
+    "suitability_rating": "string",
+    "strengths": ["string"],
+    "concerns": ["string"],
+    "recommendation": "string"
+  },
+  "example_response": {
+    "candidate_name": "sample string",
+    "role_applied": "sample string",
+    "screening_questions": [
+      {
+        "question": "sample string",
+        "category": "sample string",
+        "answer_evaluation": "sample string",
+        "score": 0
+      }
+    ],
+    "overall_score": 0,
+    "suitability_rating": "sample string",
+    "strengths": ["sample string"],
+    "concerns": ["sample string"],
+    "recommendation": "sample string"
+  }
+}

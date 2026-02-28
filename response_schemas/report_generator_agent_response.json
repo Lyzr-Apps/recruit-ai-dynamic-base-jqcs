@@ -1,0 +1,40 @@
+{
+  "agent_name": "Report Generator Agent",
+  "agent_id": "69a36b43c46cc1fb2b570432",
+  "description": "Compiles processed interview data into a structured, unbiased evaluation report with competency scoring",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "executive_summary": "string",
+    "competency_scores": [
+      {
+        "dimension": "string",
+        "score": "number",
+        "evidence": "string"
+      }
+    ],
+    "overall_score": "number",
+    "strengths": ["string"],
+    "development_areas": ["string"],
+    "recommendation": "string",
+    "risk_assessment": "string",
+    "onboarding_suggestions": ["string"]
+  },
+  "example_response": {
+    "executive_summary": "sample string",
+    "competency_scores": [
+      {
+        "dimension": "sample string",
+        "score": 0,
+        "evidence": "sample string"
+      }
+    ],
+    "overall_score": 0,
+    "strengths": ["sample string"],
+    "development_areas": ["sample string"],
+    "recommendation": "sample string",
+    "risk_assessment": "sample string",
+    "onboarding_suggestions": ["sample string"]
+  }
+}

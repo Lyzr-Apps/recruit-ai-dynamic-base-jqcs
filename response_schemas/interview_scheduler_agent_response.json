@@ -1,0 +1,40 @@
+{
+  "agent_name": "Interview Scheduler Agent",
+  "agent_id": "69a36b92baa6e1c48dc21f9e",
+  "description": "Automates interview scheduling by checking availability, creating calendar events, and sending confirmation emails",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "scheduling_status": "string",
+    "scheduled_interviews": [
+      {
+        "candidate_name": "string",
+        "interviewer_name": "string",
+        "date_time": "string",
+        "duration": "string",
+        "meeting_link": "string",
+        "status": "string"
+      }
+    ],
+    "emails_sent": ["string"],
+    "conflicts": ["string"],
+    "summary": "string"
+  },
+  "example_response": {
+    "scheduling_status": "sample string",
+    "scheduled_interviews": [
+      {
+        "candidate_name": "sample string",
+        "interviewer_name": "sample string",
+        "date_time": "sample string",
+        "duration": "sample string",
+        "meeting_link": "sample string",
+        "status": "sample string"
+      }
+    ],
+    "emails_sent": ["sample string"],
+    "conflicts": ["sample string"],
+    "summary": "sample string"
+  }
+}
